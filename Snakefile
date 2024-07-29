@@ -39,25 +39,26 @@ rule salmon_index:
     input:
         sequences=config["transcriptome_fasta"]
     output:
-        "salmon",
-        multiext(
-            "salmon/",
-            "complete_ref_lens.bin",
-            "ctable.bin",
-            "ctg_offsets.bin",
-            "duplicate_clusters.tsv",
-            "info.json",
-            "mphf.bin",
-            "pos.bin",
-            "pre_indexing.log",
-            "rank.bin",
-            "refAccumLengths.bin",
-            "ref_indexing.log",
-            "reflengths.bin",
-            "refseq.bin",
-            "seq.bin",
-            "versionInfo.json",
-        ),
+        directory("salmon")
+        #"salmon/complete_ref_lens.bin"
+        # multiext(
+        #     "salmon/",
+        #     "complete_ref_lens.bin",
+        #     "ctable.bin",
+        #     "ctg_offsets.bin",
+        #     "duplicate_clusters.tsv",
+        #     "info.json",
+        #     "mphf.bin",
+        #     "pos.bin",
+        #     "pre_indexing.log",
+        #     "rank.bin",
+        #     "refAccumLengths.bin",
+        #     "ref_indexing.log",
+        #     "reflengths.bin",
+        #     "refseq.bin",
+        #     "seq.bin",
+        #     "versionInfo.json",
+        # ),
     params:
         # optional parameters
         extra="--gencode"
@@ -86,7 +87,7 @@ rule generate_tx2gene:
     input:
         gtf=config["transcriptome_gtf"]
     output:
-        tx2gene="salmon/tx2gene.txt"
+        tx2gene="salmon_quant/tx2gene.txt"
     shell:
         """
         gzip -dc {input.gtf} | awk -F'\t' '$3 == "transcript" {{ 
@@ -113,17 +114,15 @@ rule deseq2_transcript:
     log:
         "logs/deseq2/transcript_{comparison}.log"
     conda:
-        #"deseq2_env.yaml"
-        "test1"
+        "env/deseq2_env.yaml"
     script:
         "scripts/run_deseq2_transcript_level.R"
-
 
 
 rule deseq2_gene:
     input:
         quants=deseq2_input_files,
-        tx2gene="salmon/tx2gene.txt"
+        tx2gene="salmon_quant/tx2gene.txt"
     output:
         "results/{comparison}/gene_differential_expression.tsv"
     params:
@@ -132,7 +131,6 @@ rule deseq2_gene:
     log:
         "logs/deseq2/gene_{comparison}.log"
     conda:
-        #"deseq2_env.yaml"
-        "test1"
+        "env/deseq2_env.yaml"
     script:
         "scripts/run_deseq2_gene_level.R"

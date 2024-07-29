@@ -1,11 +1,12 @@
 name: deseq2_env
 channels:
-  - bioconda
   - conda-forge
+  - bioconda
   - defaults
 dependencies:
-  - bioconductor-deseq2
-  - bioconductor-tximport
-  - r-jsonlite
+  - r-base=4.3.3
+  - bioconductor-deseq2=1.42.0
+  - bioconductor-tximport=1.30.0
   - r-data.table
   - r-readr
+  - r-jsonlite
