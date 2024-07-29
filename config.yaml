@@ -1,0 +1,11 @@
+transcriptome_fasta: "/Users/geparada/Genome/hg38/Tracks/gencode.v46.transcripts.fa.gz"
+transcriptome_gtf: "/Users/geparada/Genome/hg38/Tracks/gencode.v46.chr_patch_hapl_scaff.annotation.gtf.gz"
+
+samples:
+  SRR11590661: "interneuron"
+  SRR11590667: "interneuron"
+  SRR11590663: "pyramidal_neuron"
+  SRR11590669: "pyramidal_neuron"
+
+comparisons:
+  - interneuron_vs_pyramidal_neuron
